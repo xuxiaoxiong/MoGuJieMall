@@ -33,7 +33,6 @@
         computed: {
             showImg(){
                 // 为什么顺序那么重要
-                console.log(this.good)
 
                 return this.good.image  || this.good.show.img
             }

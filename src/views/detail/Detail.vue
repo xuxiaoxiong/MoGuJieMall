@@ -57,12 +57,10 @@
                 this.goodsInfo = data.detailInfo;
                 this.goodsParam = data.itemParams;
                 this.goodComment = data.rate.list;
-                console.log(this.goodComment)
             })
 
             getRecommend().then(res => {
                 this.goodsRecommend = res.data.list;
-                console.log(this.goodsRecommend)
             });
 
         },
@@ -85,7 +83,7 @@
   .detail1 {
     height: 100vh;
     position: relative;
-    background-color: white;
+    background-color: #ffffff;
     z-index: 40;
 
     .detail-content {

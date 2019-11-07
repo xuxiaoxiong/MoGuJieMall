@@ -32,6 +32,7 @@
     import {deBounce} from "common/utils";
 
     import {POP, SELL, NEW} from "@/common/const";
+    import {imgLoadMix} from "common/mixin";
 
 
     export default {
@@ -53,6 +54,8 @@
                 tabOffsetTop: 0,
                 tabIsFixed: false,
                 leaveY : 0,
+
+
 
             }
         },
@@ -76,6 +79,7 @@
 
 
         },
+        mixins:[imgLoadMix],
         methods: {
             //注意外面包裹可一层方法。
 
@@ -146,12 +150,6 @@
         },
         mounted() {
             // 事件总线
-            const refresh = deBounce(this.$refs.scroll.refresh, 200);
-            this.$bus.$on("itemImgLoad", () => {
-                refresh();
-            });
-
-
         },
         activated() {
             this.$refs.scroll.scrollTo(0,this.leaveY,0);
@@ -161,8 +159,6 @@
         deactivated() {
             this.leaveY = this.$refs.scroll.scrollY();
         },
-
-
     }
 </script>
 
