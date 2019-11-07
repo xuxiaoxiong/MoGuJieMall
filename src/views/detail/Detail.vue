@@ -29,6 +29,7 @@
     import {getDetail, Goods, getRecommend} from "network/detail";
     import Scroll from "components/common/scroll/Scroll";
     import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
+    import {imgLoadMix} from "common/mixin";
 
 
     export default {
@@ -74,7 +75,8 @@
             ShopDetail,
             GoodsParam,
             GoodList,
-        }
+        },
+        mixins:[imgLoadMix],
 
     }
 </script>
