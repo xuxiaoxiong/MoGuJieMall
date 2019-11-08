@@ -13,7 +13,7 @@
 
     </scroll>
     <back-top v-show="backTopIsShow"  @click.native="backToTop"/>
-    <detail-bottom-bar/>
+    <detail-bottom-bar  @addCart="addCart"/>
 
   </div>
 </template>
@@ -63,6 +63,7 @@
 
             getDetail(this.id).then(res => {
                 const data = res.result;
+                console.log(data)
                 this.imgArys = data.itemInfo.topImages;
                 this.goods = new Goods(data.itemInfo, data.columns, data.shopInfo.services);
                 this.shop = data.shopInfo;
@@ -119,6 +120,16 @@
             backToTop(){
                 this.$refs.scroll.scrollTo(0,0,700);
             },
+            addCart(){
+                const goods = {};
+                goods.image = this.imgArys[0];
+                goods.title = this.goods.title;
+                goods.desc = this.goods.desc;
+                goods.price = this.goods.oldPrice;
+                goods.iid = this.id;
+                this.$store.commit("addCart",goods);
+            },
+
         },
         mounted() {
             this.setItemTopDistance = deBounce(() => {
