@@ -13,7 +13,7 @@
 
     </scroll>
     <back-top v-show="backTopIsShow"  @click.native="backToTop"/>
-    <detail-bottom-bar  @addCart="addCart"/>
+    <detail-bottom-bar  @addCart="addCart"></detail-bottom-bar>
 
   </div>
 </template>
@@ -63,7 +63,6 @@
 
             getDetail(this.id).then(res => {
                 const data = res.result;
-                console.log(data)
                 this.imgArys = data.itemInfo.topImages;
                 this.goods = new Goods(data.itemInfo, data.columns, data.shopInfo.services);
                 this.shop = data.shopInfo;
@@ -127,7 +126,7 @@
                 goods.desc = this.goods.desc;
                 goods.price = this.goods.oldPrice;
                 goods.iid = this.id;
-                this.$store.commit("addCart",goods);
+                this.$store.dispatch("addCart",goods);
             },
 
         },
@@ -138,7 +137,6 @@
                 this.itemTopDistance.push(this.$refs.goodsparams.$el.offsetTop);
                 this.itemTopDistance.push(this.$refs.goodscomment.$el.offsetTop);
                 this.itemTopDistance.push(this.$refs.gooodsrecommend.$el.offsetTop);
-                console.log(this.itemTopDistance)
             }, 100);
         },
 
