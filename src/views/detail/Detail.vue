@@ -1,14 +1,14 @@
 <template>
   <div class="detail1">
     <detail-nav></detail-nav>
-    <scroll class="detail-content">
+    <scroll class="detail-content" ref="scroll" :probeType="3" @scroll="scroll">
       <detail-swiper :imgs="imgArys"></detail-swiper>
-      <goods-detail-info :goods="goods"></goods-detail-info>
+      <goods-detail-info :goods="goods" ref="goodsdetails"></goods-detail-info>
       <shop-detail :shop="shop"></shop-detail>
-      <detail-goods-info :goods-info="goodsInfo"></detail-goods-info>
-      <goods-param :goods-param="goodsParam"></goods-param>
-      <goods-comment :comment="goodComment"></goods-comment>
-      <good-list :goods="goodsRecommend"></good-list>
+      <detail-goods-info :goods-info="goodsInfo" @imgLoad="imgLoad"></detail-goods-info>
+      <goods-param :goods-param="goodsParam" ref="goodsparams"></goods-param>
+      <goods-comment :comment="goodComment" ref="goodscomment"></goods-comment>
+      <good-list :goods="goodsRecommend" ref="gooodsrecommend"></good-list>
 
 
     </scroll>
@@ -24,6 +24,7 @@
     import ShopDetail from "./childComps/ShopDetail";
     import GoodsParam from "./childComps/GoodsParam";
     import GoodsComment from "./childComps/GoodsComment";
+    import {deBounce} from "common/utils";
 
     import GoodList from "components/content/GoodsList/GoodList";
     import {getDetail, Goods, getRecommend} from "network/detail";
@@ -44,6 +45,8 @@
                 goodsParam: {},
                 goodComment: [],
                 goodsRecommend: [],
+                itemTopDistance:[],
+                setItemTopDistance:null,
 
             }
         },
@@ -64,6 +67,8 @@
                 this.goodsRecommend = res.data.list;
             });
 
+
+
         },
         components: {
             GoodsComment,
@@ -77,6 +82,29 @@
             GoodList,
         },
         mixins:[imgLoadMix],
+      methods:{
+          imgLoad(){
+              this.refresh();
+              this.setItemTopDistance();
+
+          },
+          scroll(position){
+
+          },
+          navClick(){
+
+          },
+      },
+    mounted() {
+        this.setItemTopDistance = deBounce(()=>{
+            this.itemTopDistance = [];
+            this.itemTopDistance.push(0);
+            this.itemTopDistance.push(this.$refs.goodsparams.$el.offsetTop);
+            this.itemTopDistance.push(this.$refs.goodscomment.$el.offsetTop);
+            this.itemTopDistance.push(this.$refs.gooodsrecommend.$el.offsetTop);
+            console.log(this.itemTopDistance)
+        },100);
+    },
 
     }
 </script>

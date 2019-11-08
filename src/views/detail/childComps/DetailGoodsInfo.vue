@@ -10,7 +10,7 @@
               {{goodsInfo.detailImage[0].key}}
 
       </div>
-      <div class="detail-image-content" v-for="item in goodsInfo.detailImage[0].list"><img :src="item" alt=""></div>
+      <div class="detail-image-content" v-for="item in goodsInfo.detailImage[0].list"><img :src="item" alt="" @load="imgLoad"></div>
     </div>
   </div>
 </template>
@@ -25,7 +25,12 @@
                     return {}
                 }
             }
+        },
+    methods:{
+        imgLoad(){
+            this.$emit("imgLoad");
         }
+    },
     }
 </script>
 
