@@ -1,6 +1,6 @@
 <template>
   <div class="detail1">
-    <detail-nav></detail-nav>
+    <detail-nav @itmClick="navItmClick" :currentIndex="currentNavIndex"></detail-nav>
     <scroll class="detail-content" ref="scroll" :probeType="3" @scroll="scroll">
       <detail-swiper :imgs="imgArys"></detail-swiper>
       <goods-detail-info :goods="goods" ref="goodsdetails"></goods-detail-info>
@@ -12,7 +12,8 @@
 
 
     </scroll>
-
+    <back-top v-show="backTopIsShow"  @click.native="backToTop"/>
+    <detail-bottom-bar/>
 
   </div>
 </template>
@@ -24,12 +25,17 @@
     import ShopDetail from "./childComps/ShopDetail";
     import GoodsParam from "./childComps/GoodsParam";
     import GoodsComment from "./childComps/GoodsComment";
-    import {deBounce} from "common/utils";
-
-    import GoodList from "components/content/GoodsList/GoodList";
-    import {getDetail, Goods, getRecommend} from "network/detail";
-    import Scroll from "components/common/scroll/Scroll";
+    import DetailBottomBar from "./childComps/DetailBottomBar";
     import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
+
+
+    import Scroll from "components/common/scroll/Scroll";
+    import GoodList from "components/content/GoodsList/GoodList";
+    import BackTop from "components/content/backtop/BackTop";
+
+    import {getDetail, Goods, getRecommend} from "network/detail";
+
+    import {deBounce} from "common/utils";
     import {imgLoadMix} from "common/mixin";
 
 
@@ -45,8 +51,10 @@
                 goodsParam: {},
                 goodComment: [],
                 goodsRecommend: [],
-                itemTopDistance:[],
-                setItemTopDistance:null,
+                itemTopDistance: [],
+                setItemTopDistance: null,
+                currentNavIndex: 0,
+                backTopIsShow: false,
 
             }
         },
@@ -68,7 +76,6 @@
             });
 
 
-
         },
         components: {
             GoodsComment,
@@ -80,31 +87,49 @@
             ShopDetail,
             GoodsParam,
             GoodList,
+            DetailBottomBar,
+            BackTop,
         },
-        mixins:[imgLoadMix],
-      methods:{
-          imgLoad(){
-              this.refresh();
-              this.setItemTopDistance();
+        mixins: [imgLoadMix],
+        methods: {
+            imgLoad() {
+                this.refresh();
+                this.setItemTopDistance();
 
-          },
-          scroll(position){
+            },
+            scroll(position) {
+                if(-(position.y) > 1000){
+                    this.backTopIsShow = true;
+                }
+                if(-(position.y) < 1000){
+                    this.backTopIsShow = false;
+                }
 
-          },
-          navClick(){
-
-          },
-      },
-    mounted() {
-        this.setItemTopDistance = deBounce(()=>{
-            this.itemTopDistance = [];
-            this.itemTopDistance.push(0);
-            this.itemTopDistance.push(this.$refs.goodsparams.$el.offsetTop);
-            this.itemTopDistance.push(this.$refs.goodscomment.$el.offsetTop);
-            this.itemTopDistance.push(this.$refs.gooodsrecommend.$el.offsetTop);
-            console.log(this.itemTopDistance)
-        },100);
-    },
+                for (let i = this.itemTopDistance.length - 1; i > -1; i--) {
+                    if (-(position.y) > this.itemTopDistance[i]) {
+                        this.currentNavIndex = i;
+                        break;
+                    }
+                }
+            },
+            navItmClick(index) {
+                this.currentNavIndex = index;
+                this.$refs.scroll.scrollTo(0, -this.itemTopDistance[index], 700);
+            },
+            backToTop(){
+                this.$refs.scroll.scrollTo(0,0,700);
+            },
+        },
+        mounted() {
+            this.setItemTopDistance = deBounce(() => {
+                this.itemTopDistance = [];
+                this.itemTopDistance.push(0);
+                this.itemTopDistance.push(this.$refs.goodsparams.$el.offsetTop);
+                this.itemTopDistance.push(this.$refs.goodscomment.$el.offsetTop);
+                this.itemTopDistance.push(this.$refs.gooodsrecommend.$el.offsetTop);
+                console.log(this.itemTopDistance)
+            }, 100);
+        },
 
     }
 </script>
