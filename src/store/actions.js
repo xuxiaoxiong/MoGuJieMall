@@ -1,4 +1,4 @@
-import {ADD_CART,ADD_COUNT} from "./mutations-type";
+import {ADD_CART,ADD_COUNT,CHANGE_CHECK_SINGLE} from "./mutations-type";
 
 export default  {
   addCart(context,payload){
@@ -13,6 +13,11 @@ export default  {
       payload.count = 1;
       context.commit(ADD_CART,payload);
     }
-    console.log(context.state.cartList)
-  }
+  },
+  chgSingle(context,payload,isActive){
+    console.log(isActive)
+      payload.checked = isActive
+
+  },
+
 }
