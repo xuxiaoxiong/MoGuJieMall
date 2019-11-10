@@ -1,8 +1,8 @@
 <template>
   <div class="home_goods_show_item" @click="itemClick">
 
-    <!--    -->
-    <img :src="showImg" alt="" @load="imgLoadCom">
+    <!-- v-lazy 不会自动提示，并且显示可能异样   -->
+    <img v-lazy="showImg" alt="" @load="imgLoadCom">
     <div class="title">
       <p>{{good.title}}</p>
       <span class="price">{{good.price}}</span> <span class="cfav">{{good.cfav}}</span>

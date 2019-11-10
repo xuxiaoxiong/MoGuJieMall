@@ -1,5 +1,5 @@
 <template>
-    <div class="nav">
+    <div class="tab-bar">
         <tab-bar-item path="/home">
             <img src="~assets/imgs/tabbar/home.png" slot="tabbar-item-icon" alt="">
             <img src="~assets/imgs/tabbar/home_active.png" slot="tabbar-item-active" alt="">
@@ -36,7 +36,7 @@
 </script>
 
 <style scoped lang="scss">
-    .nav{
+    .tab-bar{
         display: flex;
         position: fixed;
         left: 0;
