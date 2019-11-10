@@ -126,7 +126,9 @@
                 goods.desc = this.goods.desc;
                 goods.price = this.goods.oldPrice;
                 goods.iid = this.id;
-                this.$store.dispatch("addCart",goods);
+                this.$store.dispatch("addCart",goods).then(res => {
+                    this.$toast.show(res,2000);
+                });
             },
 
         },

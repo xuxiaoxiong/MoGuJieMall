@@ -2,7 +2,7 @@
     <div class="cart-bottom-bar">
       <div class="left"><check-button class="chkbtn" @click.native="chkClick" :isActive="isActive"/><span class="left-txt">全选</span></div>
       <div class="center">合计：{{getTotalPrice | priceFilter}}</div>
-      <div class="right">去结算{{getTotalCount}}</div>
+      <div class="right" @click="showToast">去结算{{getTotalCount}}</div>
     </div>
 </template>
 
@@ -22,7 +22,10 @@
             chkClick(){
                 this.isActive = !this.isActive;
                 this.$store.commit("changeChk",this.isActive);
-            }
+            },
+            showToast(){
+                this.$toast.show("测试toast",2000);
+            },
         },
   computed:{
       ...mapGetters([
